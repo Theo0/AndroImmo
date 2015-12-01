@@ -1,4 +1,4 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
+import com.umontpellier.theochambon.androimmo.R;
 
 import java.util.HashMap;
 

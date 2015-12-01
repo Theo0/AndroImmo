@@ -1,4 +1,4 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +19,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
+import com.umontpellier.theochambon.androimmo.R;
+import com.umontpellier.theochambon.androimmo.Util.WorkaroundMapFragment;
 
 import java.util.HashMap;
 

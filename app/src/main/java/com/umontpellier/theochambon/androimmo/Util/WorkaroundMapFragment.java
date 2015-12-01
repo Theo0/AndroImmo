@@ -1,4 +1,4 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Util;
 
 /**
  * Created by theo on 01/11/2015.

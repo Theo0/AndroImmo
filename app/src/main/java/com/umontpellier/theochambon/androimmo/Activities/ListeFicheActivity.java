@@ -1,4 +1,4 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
+import com.umontpellier.theochambon.androimmo.Adapters.ContenuListAdapter;
+import com.umontpellier.theochambon.androimmo.Adapters.ContenuListe;
+import com.umontpellier.theochambon.androimmo.Util.DividerItemDecoration;
+import com.umontpellier.theochambon.androimmo.R;
 
 import java.util.ArrayList;
 import java.util.List;

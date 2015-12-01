@@ -27,7 +27,7 @@
         android:logo="@drawable/home"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,21 +36,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewFicheActivity"
+            android:name=".Activities.NewFicheActivity"
             android:label="@string/title_activity_new_fiche"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
-            android:name=".ListeFicheActivity"
+            android:name=".Activities.ListeFicheActivity"
             android:label="@string/title_activity_liste_fiche" >
         </activity>
         <activity
-            android:name=".ConsultFicheActivity"
+            android:name=".Activities.ConsultFicheActivity"
             android:label="@string/title_activity_consult_fiche"
             android:configChanges="orientation|screenSize">
         </activity>
         <activity
-            android:name=".EditFicheActivity"
+            android:name=".Activities.EditFicheActivity"
             android:label="@string/title_activity_edit_fiche"
             android:configChanges="orientation|screenSize">
         </activity>

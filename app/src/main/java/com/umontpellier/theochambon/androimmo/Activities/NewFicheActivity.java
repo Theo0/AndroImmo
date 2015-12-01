@@ -1,10 +1,9 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -12,18 +11,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
+import com.umontpellier.theochambon.androimmo.R;
+import com.umontpellier.theochambon.androimmo.Managers.ShakeEventManager;
 
 import java.io.File;
 import java.io.IOException;

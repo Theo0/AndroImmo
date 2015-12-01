@@ -1,9 +1,12 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.umontpellier.theochambon.androimmo.CameraTest;
+import com.umontpellier.theochambon.androimmo.R;
 
 
 public class MainActivity extends AppCompatActivity {

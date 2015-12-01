@@ -1,4 +1,4 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Util;
 
 import android.content.Context;
 import android.content.res.TypedArray;

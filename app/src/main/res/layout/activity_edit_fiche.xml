@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.umontpellier.theochambon.androimmo.EditFicheActivity">
+    tools:context=".Activities.EditFicheActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

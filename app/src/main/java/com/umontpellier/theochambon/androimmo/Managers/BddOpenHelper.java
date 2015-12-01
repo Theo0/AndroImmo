@@ -1,10 +1,12 @@
-package com.umontpellier.theochambon.androimmo;
+package com.umontpellier.theochambon.androimmo.Managers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.umontpellier.theochambon.androimmo.Adapters.ContenuListe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
     private static final String DATABASE_CREATE =
             "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY, NOM TEXT, SURFACE INTEGER, NBPIECES INTEGER, NBCHAMBRES INTEGER, NBSDB INTEGER, NBWC INTEGER, NBBALCON INTEGER, ETAGES INTEGER, ADR TEXT, VILLE TEXT, EXPO TEXT, TAXE INTEGER, COPRO INTEGER, NOTES TEXT, LAT INTEGER, LON INTEGER, IMG1 TEXT, IMG2 TEXT, IMG3 TEXT)";
 
-    BddOpenHelper(Context context) {
+    public BddOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

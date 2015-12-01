@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.umontpellier.theochambon.androimmo.Managers.ShakeEventManager;
+
 public class CameraTest extends AppCompatActivity implements  ShakeEventManager.ShakeListener {
 
     private static final int CAMERA_REQUEST = 1888;

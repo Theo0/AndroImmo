@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.umontpellier.theochambon.androimmo.ConsultFicheActivity">
+    tools:context=".Activities.ConsultFicheActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -574,7 +574,7 @@
                         android:name="com.google.android.gms.maps.MapFragment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        class="com.umontpellier.theochambon.androimmo.WorkaroundMapFragment"/>
+                        class="com.umontpellier.theochambon.androimmo.Util.WorkaroundMapFragment"/>
                         />
 
 
