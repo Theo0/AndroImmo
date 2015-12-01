@@ -1,0 +1,553 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.umontpellier.theochambon.androimmo.EditFicheActivity">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/done"
+        android:onClick="sauveFiche"
+        app:fabSize="normal"
+        app:backgroundTint="@color/green_floating"
+        />
+
+    <!-- Liste des cartes dans une scrollview-->
+    <ScrollView android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+
+            <!-- Nom de la fiche -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/nom"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/NomFiche"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nomEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/NomFiche"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nomhint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <!-- SURFACE -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/surface"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/SurfaceText"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/surfaceEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/SurfaceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/surfacehint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <!-- NOMBRE PIECES -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/nbpieces"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nbPieces"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nbpiecesEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/nbPieces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/nbpieceshint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- NOMBRES CHAMBRES -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/nbchambres"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nbchambre"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nbchambreEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/nbchambre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/nbchambreshint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- NOMBRE SDB -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/nbSDB"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nbSDB"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nbSDBEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/nbSDB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/nbSDBhint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- NOMBRE WC -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/nbWC"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nbWC"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nbWCEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/nbWC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/nbWChint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- NOMBRE BALCONS -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/balcon"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/balcon"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/nbBalconEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/balcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/balconhint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- NOMBRE ETAGES -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/etages"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etages"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/etagesEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/etages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/etageshint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- ADRESSE -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/adr"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/adr"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/adrEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/adr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="@string/adrhint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <!-- ADRESSE -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/ville"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ville"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/villeEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/ville"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="@string/adrhint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- EXPO -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/expo"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/expo"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/expoEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/expo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="@string/expohint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- TAXE FONCIERE -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/taxe"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/taxe"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/taxeEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/taxe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/taxehint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- COPRO -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/copro"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/copro"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/coproEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/copro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/coprohint"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- AUTRES NOTES -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/descr"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/descr"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp"
+                        />
+
+                    <EditText
+                        android:id="@+id/notesEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/descr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/descrhint"
+                        android:scrollbars="vertical"
+                        android:fadeScrollbars="false"
+                        android:maxLines="7"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

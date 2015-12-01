@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroImmo</string>
+    <string name="bouton_consulter_fiche">Open your cards</string>
+    <string name="bouton_nouvelle_fiche">New Card</string>
+    <string name="title_activity_main2">Home</string>
+    <string name="title_activity_new_fiche">Create a new card</string>
+</resources>

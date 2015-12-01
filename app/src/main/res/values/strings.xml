@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">AndroImmo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="bouton_nouvelle_fiche">Nouvelle Fiche</string>
+    <string name="bouton_consulter_fiche">Consulter Vos Fiches</string>
+    <string name="bouton_consulter_fiche_distante">Consulter Les Fiches Partagées</string>
+    <string name="title_activity_main2">Accueil</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_new_fiche">Nouvelle Fiche</string>
+
+    <!-- CREATION DUNE NOUVELLE FICHE -->
+    <string name="nom">Nom de la fiche : </string>
+    <string name="surface">Surface Totale : </string>
+    <string name="nbpieces">Nombre de pièces : </string>
+    <string name="nbchambres">Nombre de chambres : </string>
+    <string name="nbSDB">Nombres de salles de bains : </string>
+    <string name="nbWC">Nombre de WC : </string>
+    <string name="balcon">Balcon ou terasse : </string>
+    <string name="cuisine">Cuisine Equipée : </string>
+    <string name="etages">Etages : </string>
+    <string name="adr">Adresse : </string>
+    <string name="ville">Ville : </string>
+    <string name="expo">Exposition : </string>
+    <string name="taxe">Taxe Foncière : </string>
+    <string name="copro">Charges de copropriétés : </string>
+    <string name="descr">Autres notes : </string>
+    <!-- Hints nouvelle fiche-->
+    <string name="nomhint">Ex : Grand studio centre Montpellier </string>
+    <string name="surfacehint">Ex : 142m</string>
+    <string name="nbpieceshint">Ex : 5</string>
+    <string name="nbchambreshint">Ex : 3</string>
+    <string name="nbSDBhint">Ex : 1</string>
+    <string name="nbWChint">Ex : 2</string>
+    <string name="balconhint">Ex : 1</string>
+    <string name="etageshint">Ex : 2</string>
+    <string name="adrhint">Ex : 55 avenue de la liberté </string>
+    <string name="villehint">Ex : Montpellier </string>
+    <string name="expohint">Ex : Sud Ouest </string>
+    <string name="taxehint">Ex : 1500€ </string>
+    <string name="coprohint">Ex : 500€</string>
+    <string name="descrhint">Ex : Chambres à rénover, quartier très calme, proche transports, etc...</string>
+
+    <string name="pieces">pièces</string>
+
+    <string name="save">Enregistrer la fiche</string>
+    <string name="title_activity_liste_fiche">Vos Fiches</string>
+    <string name="title_activity_consult_fiche">Votre Fiche</string>
+    <string name="title_activity_edit_fiche">Modification de votre Fiche</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_camera_test">CameraTest</string>
+
+    <string name="search">Rechercher...</string>
+
+
+
+
+</resources>
+
