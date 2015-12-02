@@ -7,17 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
 import com.umontpellier.theochambon.androimmo.Adapters.ContenuListAdapter;
 import com.umontpellier.theochambon.androimmo.Adapters.ContenuListe;
-import com.umontpellier.theochambon.androimmo.Util.DividerItemDecoration;
+import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
 import com.umontpellier.theochambon.androimmo.R;
+import com.umontpellier.theochambon.androimmo.Util.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,6 @@ public class ListeFicheActivity extends AppCompatActivity implements SearchView.
 
     @Override
     public boolean onQueryTextChange(String query) {
-        Log.w("debug", noms.toString());
         noms = bdd.getNoms();
         final List<ContenuListe> filteredModelList = filter(noms, query);
         recAdapter.animateTo(filteredModelList);
@@ -104,7 +102,9 @@ public class ListeFicheActivity extends AppCompatActivity implements SearchView.
         TextView tv = (TextView) v.findViewById(R.id.tvID);
         String id = tv.getText().toString();
         i.putExtra("id", id);
+        i.putExtra("dist", "false");
         startActivity(i);
     }
+
 
 }

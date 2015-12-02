@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,11 +20,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.umontpellier.theochambon.androimmo.Constants.Constants;
+import com.umontpellier.theochambon.androimmo.HttpServer.ConnectServer;
 import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
 import com.umontpellier.theochambon.androimmo.R;
 import com.umontpellier.theochambon.androimmo.Util.WorkaroundMapFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.Iterator;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -34,6 +42,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     String img1;
     String img2;
     String img3;
+    String id = "0";
     ImageView imageView1;
     ImageView imageView2;
     ImageView imageView3;
@@ -43,6 +52,8 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     PhotoViewAttacher mAttacher;
     private ScrollView mScrollView;
     private GoogleMap mMap;
+    FloatingActionButton fab;
+    FloatingActionButton fab2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,79 +61,97 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_consult_fiche);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setIcon(R.drawable.home);
         imageView1 = (ImageView) findViewById(R.id.photo1);
         imageView2 = (ImageView) findViewById(R.id.photo2);
         imageView3 = (ImageView) findViewById(R.id.photo3);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
         initialiseMap();
-        remplirFiche();
+        if (getIntent().getStringExtra("dist").equals("true")) {
+            fab.hide();
+            fab2.hide();
+            remplirFicheDistante();
+        } else {
+            remplirFiche();
+            new remplirFicheTask().execute();
+        }
         activeFullScreen();
-        new remplirFicheTask().execute();
-
-
         }
 
     public void remplirFiche(){
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
 
         BddOpenHelper bdd = new BddOpenHelper(this);
 
         HashMap<String, String> contenu = bdd.getContenuFiche(id);
 
         if(!contenu.isEmpty()){
-
-            TextView tv = (TextView) findViewById(R.id.NomFiche);
-            tv.setText(contenu.get("nom"));
-
-            tv = (TextView) findViewById(R.id.surfaceEdit);
-            tv.setText(contenu.get("surface"));
-
-            tv = (TextView) findViewById(R.id.nbpiecesEdit);
-            tv.setText(contenu.get("nbpieces"));
-
-            tv = (TextView) findViewById(R.id.nbchambreEdit);
-            tv.setText(contenu.get("nbchambres"));
-
-            tv = (TextView) findViewById(R.id.nbSDBEdit);
-            tv.setText(contenu.get("nbsdb"));
-
-            tv = (TextView) findViewById(R.id.nbWCEdit);
-            tv.setText(contenu.get("nbwc"));
-
-            tv = (TextView) findViewById(R.id.nbBalconEdit);
-            tv.setText(contenu.get("nbbalcon"));
-
-            tv = (TextView) findViewById(R.id.etagesEdit);
-            tv.setText(contenu.get("etages"));
-
-            tv = (TextView) findViewById(R.id.adrEdit);
-            tv.setText(contenu.get("adr"));
-
-            tv = (TextView) findViewById(R.id.villeEdit);
-            tv.setText(contenu.get("ville"));
-
-            tv = (TextView) findViewById(R.id.expoEdit);
-            tv.setText(contenu.get("expo"));
-
-            tv = (TextView) findViewById(R.id.taxeEdit);
-            tv.setText(contenu.get("taxe"));
-
-            tv = (TextView) findViewById(R.id.coproEdit);
-            tv.setText(contenu.get("copro"));
-
-            tv = (TextView) findViewById(R.id.notesEdit);
-            tv.setText(contenu.get("notes"));
-
-            lat = Double.parseDouble(contenu.get("lat"));
-            lon = Double.parseDouble(contenu.get("lon"));
-            img1 = contenu.get("img1");
-            img2 = contenu.get("img2");
-            img3 = contenu.get("img3");
-
-
+            remplirTextViews(contenu);
         }
+    }
+
+    public void remplirTextViews(HashMap<String, String> contenu) {
+        TextView tv = (TextView) findViewById(R.id.NomFiche);
+        tv.setText(contenu.get("NOM"));
+
+        tv = (TextView) findViewById(R.id.surfaceEdit);
+        tv.setText(contenu.get("SURFACE"));
+
+        tv = (TextView) findViewById(R.id.nbpiecesEdit);
+        tv.setText(contenu.get("NBPIECES"));
+
+        tv = (TextView) findViewById(R.id.nbchambreEdit);
+        tv.setText(contenu.get("NBCHAMBRES"));
+
+        tv = (TextView) findViewById(R.id.nbSDBEdit);
+        tv.setText(contenu.get("NBSDB"));
+
+        tv = (TextView) findViewById(R.id.nbWCEdit);
+        tv.setText(contenu.get("NBWC"));
+
+        tv = (TextView) findViewById(R.id.nbBalconEdit);
+        tv.setText(contenu.get("NBBALCON"));
+
+        tv = (TextView) findViewById(R.id.etagesEdit);
+        tv.setText(contenu.get("ETAGES"));
+
+        tv = (TextView) findViewById(R.id.adrEdit);
+        tv.setText(contenu.get("ADR"));
+
+        tv = (TextView) findViewById(R.id.villeEdit);
+        tv.setText(contenu.get("VILLE"));
+
+        tv = (TextView) findViewById(R.id.expoEdit);
+        tv.setText(contenu.get("EXPO"));
+
+        tv = (TextView) findViewById(R.id.taxeEdit);
+        tv.setText(contenu.get("TAXE"));
+
+        tv = (TextView) findViewById(R.id.coproEdit);
+        tv.setText(contenu.get("COPRO"));
+
+        tv = (TextView) findViewById(R.id.notesEdit);
+        tv.setText(contenu.get("NOTES"));
+
+        if (contenu.get("LAT") == "") {
+            lat = 0;
+        } else {
+            lat = Double.parseDouble(contenu.get("LAT"));
+        }
+        if (contenu.get("LONG") == "") {
+            lon = 0;
+        } else {
+            lon = Double.parseDouble(contenu.get("LAT"));
+        }
+        img1 = contenu.get("IMG1");
+        img2 = contenu.get("IMG2");
+        img3 = contenu.get("IMG3");
+    }
+
+    public void remplirFicheDistante() {
+        new getDonneesFicheDistantTask().execute();
     }
 
 
@@ -160,8 +189,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void activeFullScreen(){
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         final RelativeLayout full = (RelativeLayout) findViewById(R.id.fullLayout);
         final ImageView fullImage = (ImageView) findViewById(R.id.fullview);
         final FloatingActionButton quit = (FloatingActionButton) findViewById(R.id.quitButton);
@@ -230,6 +257,43 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    private class getDonneesFicheDistantTask extends AsyncTask<Void, Void, HashMap<String, String>> {
+
+        @Override
+        protected HashMap<String, String> doInBackground(Void... params) {
+            ConnectServer conn = new ConnectServer();
+            conn.setUrl(Constants.serverURL + "getFiche.php?id=" + id);
+            HashMap<String, String> donnees = new HashMap<>();
+            JSONArray json = conn.getResponseFromURL();
+            try {
+                if (json != null && json.length() > 0) {
+                    JSONObject js = json.getJSONObject(0);
+                    Iterator<?> keyset = js.keys();
+                    while (keyset.hasNext()) {
+                        String key = (String) keyset.next();
+                        String value = js.getString(key);
+                        if (value == "null") value = "";
+                        donnees.put(key, value);
+                    }
+                } else {
+                    donnees.put("NOM", "FICHE INTROUVABLE");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.w("MAP : ", donnees.toString());
+
+            return donnees;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, String> donnes) {
+            if (!donnes.isEmpty()) {
+                remplirTextViews(donnes);
+            }
+        }
+    }
 
     private class remplirFicheTask extends AsyncTask<Void, Void, Bitmap[]> {
 
@@ -295,6 +359,29 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             exportButton = false;
         }
 
+    }
+
+    public void exportDistant(View v) throws JSONException {
+        JSONObject toSend = new JSONObject();
+        toSend.put("msg", "hello");
+        new envoiJSONTask().execute(toSend);
+    }
+
+    protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Void> {
+        @Override
+        protected Void doInBackground(JSONObject... params) {
+            JSONObject json = params[0];
+            ConnectServer conn = new ConnectServer();
+            conn.setUrl(Constants.serverURL + "setFiche.php");
+            conn.sendJSONtoURL(json);
+            conn.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            Log.w("OK", "OKOKKOKOK");
+        }
     }
 
 }

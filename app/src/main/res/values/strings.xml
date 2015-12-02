@@ -54,6 +54,7 @@
 
     <string name="save">Enregistrer la fiche</string>
     <string name="title_activity_liste_fiche">Vos Fiches</string>
+    <string name="title_activity_liste_fiche_distante">Fiches Partagées</string>
     <string name="title_activity_consult_fiche">Votre Fiche</string>
     <string name="title_activity_edit_fiche">Modification de votre Fiche</string>
     <string name="title_activity_maps">Map</string>
@@ -61,7 +62,8 @@
 
     <string name="search">Rechercher...</string>
 
-
+    <string name="noConnectTitle">Pas de Connexion</string>
+    <string name="noConnectBody">Vous n\'avez de pas de connexion internet. Veuillez activer le Wi-Fi ou les données mobiles afin d\'accèder aux fiches distantes.</string>
 
 
 </resources>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.umontpellier.theochambon.androimmo.CameraTest;
 import com.umontpellier.theochambon.androimmo.R;
 
 
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchListeFicheDistant(View v){
-        Intent i = new Intent(MainActivity.this, CameraTest.class);
+        Intent i = new Intent(MainActivity.this, ListeFicheDistantesActivity.class);
         startActivity(i);
     }
 

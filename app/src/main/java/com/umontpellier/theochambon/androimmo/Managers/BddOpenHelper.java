@@ -120,25 +120,25 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(query, null);
 
         if(cursor.moveToFirst()){
-            contenu.put("nom", cursor.getString(1));
-            contenu.put("surface", cursor.getString(2));
-            contenu.put("nbpieces", cursor.getString(3));
-            contenu.put("nbchambres", cursor.getString(4));
-            contenu.put("nbsdb", cursor.getString(5));
-            contenu.put("nbwc", cursor.getString(6));
-            contenu.put("nbbalcon", cursor.getString(7));
-            contenu.put("etages", cursor.getString(8));
-            contenu.put("adr", cursor.getString(9));
-            contenu.put("ville", cursor.getString(10));
-            contenu.put("expo", cursor.getString(11));
-            contenu.put("taxe", cursor.getString(12));
-            contenu.put("copro", cursor.getString(13));
-            contenu.put("notes", cursor.getString(14));
-            contenu.put("lat", cursor.getString(15));
-            contenu.put("lon", cursor.getString(16));
-            contenu.put("img1", cursor.getString(17));
-            contenu.put("img2", cursor.getString(18));
-            contenu.put("img3", cursor.getString(19));
+            contenu.put("NOM", cursor.getString(1));
+            contenu.put("SURFACE", cursor.getString(2));
+            contenu.put("NBPIECES", cursor.getString(3));
+            contenu.put("NBCHAMBRES", cursor.getString(4));
+            contenu.put("NBSDB", cursor.getString(5));
+            contenu.put("NBWC", cursor.getString(6));
+            contenu.put("NBBALCON", cursor.getString(7));
+            contenu.put("ETAGES", cursor.getString(8));
+            contenu.put("ADR", cursor.getString(9));
+            contenu.put("VILLE", cursor.getString(10));
+            contenu.put("EXPO", cursor.getString(11));
+            contenu.put("TAXE", cursor.getString(12));
+            contenu.put("COPRO", cursor.getString(13));
+            contenu.put("NOTES", cursor.getString(14));
+            contenu.put("LAT", cursor.getString(15));
+            contenu.put("LON", cursor.getString(16));
+            contenu.put("IMG1", cursor.getString(17));
+            contenu.put("IMG2", cursor.getString(18));
+            contenu.put("IMG3", cursor.getString(19));
 
         }
 

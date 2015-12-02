@@ -4,7 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <Button android:id="@+id/button1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="PRENDRE PHOTO"></Button>
-    <ImageView android:id="@+id/imageView1" android:layout_height="fill_parent" android:layout_width="fill_parent"></ImageView>
+
+    <TextView
+        android:id="@+id/myText"
+        android:text="helooooo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -56,7 +56,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/upload"
-        android:onClick="addExportButton"
+        android:onClick="exportDistant"
         app:fabSize="mini"
         app:backgroundTint="@android:color/holo_blue_dark"
         android:visibility="gone"
