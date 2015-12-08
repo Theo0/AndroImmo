@@ -30,8 +30,6 @@ public class BddOpenHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DATABASE_CREATE);
-
-
     }
 
     @Override
@@ -108,6 +106,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         }
 
         cursor.close();
+        db.close();
         return noms;
 
     }
@@ -143,7 +142,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         }
 
         cursor.close();
-
+        db.close();
         return contenu;
     }
 

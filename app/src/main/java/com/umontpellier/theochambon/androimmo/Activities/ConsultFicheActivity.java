@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 import com.umontpellier.theochambon.androimmo.Constants.Constants;
 import com.umontpellier.theochambon.androimmo.HttpServer.ConnectServer;
 import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
@@ -32,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -51,9 +53,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     Bitmap bitmap3;
     PhotoViewAttacher mAttacher;
     private ScrollView mScrollView;
-    private GoogleMap mMap;
     FloatingActionButton fab;
     FloatingActionButton fab2;
+    HashMap<String, String> contenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +87,14 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         BddOpenHelper bdd = new BddOpenHelper(this);
 
-        HashMap<String, String> contenu = bdd.getContenuFiche(id);
+        contenu = bdd.getContenuFiche(id);
 
         if(!contenu.isEmpty()){
-            remplirTextViews(contenu);
+            remplirTextViews();
         }
     }
 
-    public void remplirTextViews(HashMap<String, String> contenu) {
+    public void remplirTextViews() {
         TextView tv = (TextView) findViewById(R.id.NomFiche);
         tv.setText(contenu.get("NOM"));
 
@@ -135,12 +137,12 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         tv = (TextView) findViewById(R.id.notesEdit);
         tv.setText(contenu.get("NOTES"));
 
-        if (contenu.get("LAT") == "") {
+        if (contenu.get("LAT") == null || contenu.get("LAT").equals("")) {
             lat = 0;
         } else {
             lat = Double.parseDouble(contenu.get("LAT"));
         }
-        if (contenu.get("LONG") == "") {
+        if (contenu.get("LONG") == null || contenu.get("LONG").equals("")) {
             lon = 0;
         } else {
             lon = Double.parseDouble(contenu.get("LAT"));
@@ -148,6 +150,32 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         img1 = contenu.get("IMG1");
         img2 = contenu.get("IMG2");
         img3 = contenu.get("IMG3");
+
+        if (getIntent().getStringExtra("dist").equals("true")) {
+            if (img1 != null && !img1.equals("")) {
+                Picasso.with(this)
+                        .load(img1)
+                        .resize(2000, 2000)
+                        .centerCrop()
+                        .into(imageView1);
+            }
+            if (img2 != null && !img2.equals("")) {
+                Picasso.with(this)
+                        .load(img2)
+                        .resize(2000, 2000)
+                        .centerCrop()
+                        .into(imageView2);
+            }
+            if (img3 != null && !img3.equals("")) {
+                Picasso.with(this)
+                        .load(img3)
+                        .resize(2000, 2000)
+                        .centerCrop()
+                        .into(imageView3);
+            }
+        }
+
+
     }
 
     public void remplirFicheDistante() {
@@ -217,7 +245,10 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             public void onClick (View v){
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
-                fullImage.setImageBitmap(bitmap1);
+                if (getIntent().getStringExtra("dist").equals("true"))
+                    Picasso.with(ConsultFicheActivity.this).load(img1).resize(2000, 2000).centerCrop().into(fullImage);
+                else
+                    fullImage.setImageBitmap(bitmap1);
                 fab.hide();
                 fab2.hide();
             }});
@@ -226,7 +257,10 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             public void onClick (View v){
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
-                fullImage.setImageBitmap(bitmap2);
+                if (getIntent().getStringExtra("dist").equals("true"))
+                    Picasso.with(ConsultFicheActivity.this).load(img1).resize(2000, 2000).centerCrop().into(fullImage);
+                else
+                    fullImage.setImageBitmap(bitmap2);
                 fab.hide();
                 fab2.hide();
             }});
@@ -235,7 +269,10 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             public void onClick (View v){
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
-                fullImage.setImageBitmap(bitmap3);
+                if (getIntent().getStringExtra("dist").equals("true"))
+                    Picasso.with(ConsultFicheActivity.this).load(img3).resize(2000, 2000).centerCrop().into(fullImage);
+                else
+                    fullImage.setImageBitmap(bitmap3);
                 fab.hide();
                 fab2.hide();
             }});
@@ -243,7 +280,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     private void initialiseMap(){
         WorkaroundMapFragment mapFragment = (WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mMap=((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        GoogleMap mMap = ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
         mScrollView=(ScrollView) findViewById(R.id.ScrollView01);((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).
                 setListener(new WorkaroundMapFragment.OnTouchListener() {
@@ -263,8 +300,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         protected HashMap<String, String> doInBackground(Void... params) {
             ConnectServer conn = new ConnectServer();
             conn.setUrl(Constants.serverURL + "getFiche.php?id=" + id);
-            HashMap<String, String> donnees = new HashMap<>();
+            contenu = new HashMap<>();
             JSONArray json = conn.getResponseFromURL();
+            Log.w("MAP : ", json.toString());
             try {
                 if (json != null && json.length() > 0) {
                     JSONObject js = json.getJSONObject(0);
@@ -273,24 +311,23 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
                         String key = (String) keyset.next();
                         String value = js.getString(key);
                         if (value == "null") value = "";
-                        donnees.put(key, value);
+                        contenu.put(key, value);
                     }
                 } else {
-                    donnees.put("NOM", "FICHE INTROUVABLE");
+                    contenu.put("NOM", "FICHE INTROUVABLE");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            Log.w("MAP : ", donnees.toString());
 
-            return donnees;
+            return contenu;
         }
 
         @Override
-        protected void onPostExecute(HashMap<String, String> donnes) {
-            if (!donnes.isEmpty()) {
-                remplirTextViews(donnes);
+        protected void onPostExecute(HashMap<String, String> contenu) {
+            if (!contenu.isEmpty()) {
+                remplirTextViews();
             }
         }
     }
@@ -300,10 +337,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         @Override
         protected Bitmap[] doInBackground(Void... params) {
 
-
             // Get the dimensions
-            int targetW = 600;
-            int targetH = 400;
+            int targetW = 1000;
+            int targetH = 1000;
 
             // Get the dimensions of the bitmap
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -361,9 +397,18 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+
+    public JSONObject ficheToJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        for (Map.Entry<String, String> entry : contenu.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
+        return json;
+    }
+
+
     public void exportDistant(View v) throws JSONException {
-        JSONObject toSend = new JSONObject();
-        toSend.put("msg", "hello");
+        JSONObject toSend = ficheToJSON();
         new envoiJSONTask().execute(toSend);
     }
 
@@ -380,7 +425,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         @Override
         protected void onPostExecute(Void param) {
-            Log.w("OK", "OKOKKOKOK");
+
         }
     }
 

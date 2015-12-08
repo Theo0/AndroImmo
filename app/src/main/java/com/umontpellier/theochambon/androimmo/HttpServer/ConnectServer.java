@@ -1,5 +1,7 @@
 package com.umontpellier.theochambon.androimmo.HttpServer;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,12 +59,21 @@ public class ConnectServer {
 
     public void sendJSONtoURL(JSONObject json) {
         try {
-            this.connect = (HttpURLConnection) this.url.openConnection();
-            this.connect.setRequestProperty("Content-Type", "application/json");
-            this.connect.setRequestMethod("POST");
+            this.connect = (HttpURLConnection) url.openConnection();
+            this.connect.setDoOutput(true);
+            this.connect.connect();
             OutputStreamWriter wr = new OutputStreamWriter(connect.getOutputStream());
-            wr.write(json.toString());
+            wr.write("json=" + json.toString());
             wr.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(this.connect.getInputStream()));
+            String aux;
+            StringBuilder builder = new StringBuilder();
+            while ((aux = br.readLine()) != null) {
+                builder.append(aux);
+            }
+            Log.w("JSON renvoyé : ", builder.toString());
+            wr.close();
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
