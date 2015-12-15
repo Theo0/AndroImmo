@@ -402,7 +402,8 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     public JSONObject ficheToJSON() throws JSONException {
         JSONObject json = new JSONObject();
         for (Map.Entry<String, String> entry : contenu.entrySet()) {
-            json.put(entry.getKey(), entry.getValue());
+            if (!entry.getKey().equals("IMG1") && !entry.getKey().equals("IMG2") && !entry.getKey().equals("IMG3"))
+                json.put(entry.getKey(), entry.getValue());
         }
         return json;
     }
