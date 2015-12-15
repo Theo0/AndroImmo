@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -412,20 +413,26 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         new envoiJSONTask().execute(toSend);
     }
 
-    protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Void> {
+    protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Integer> {
         @Override
-        protected Void doInBackground(JSONObject... params) {
+        protected Integer doInBackground(JSONObject... params) {
             JSONObject json = params[0];
             ConnectServer conn = new ConnectServer();
             conn.setUrl(Constants.serverURL + "setFiche.php");
-            conn.sendJSONtoURL(json);
+            int env = conn.sendJSONtoURL(json);
             conn.close();
-            return null;
+            return env;
         }
 
         @Override
-        protected void onPostExecute(Void param) {
-
+        protected void onPostExecute(Integer param) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Enregistrement réussi", Toast.LENGTH_SHORT);
+            if (param == 1)
+                toast.show();
+            else {
+                toast = Toast.makeText(getApplicationContext(), "Enregistrement échoué", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 

@@ -57,26 +57,33 @@ public class ConnectServer {
     }
 
 
-    public void sendJSONtoURL(JSONObject json) {
+    public int sendJSONtoURL(JSONObject json) {
+        StringBuilder builder = null;
         try {
             this.connect = (HttpURLConnection) url.openConnection();
             this.connect.setDoOutput(true);
             this.connect.connect();
-            OutputStreamWriter wr = new OutputStreamWriter(connect.getOutputStream());
+            OutputStreamWriter wr = new OutputStreamWriter(this.connect.getOutputStream());
             wr.write("json=" + json.toString());
+            Log.w("JSON =====", json.toString());
             wr.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(this.connect.getInputStream()));
             String aux;
-            StringBuilder builder = new StringBuilder();
+            builder = new StringBuilder();
             while ((aux = br.readLine()) != null) {
                 builder.append(aux);
             }
             Log.w("JSON renvoyé : ", builder.toString());
             wr.close();
             br.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (builder.toString().equals("OK"))
+            return 1;
+        else
+            return 0;
     }
 
     public void close() {
