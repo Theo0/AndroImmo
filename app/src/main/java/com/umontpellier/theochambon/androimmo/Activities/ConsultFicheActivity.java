@@ -484,6 +484,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         protected void onPostExecute(Integer param) {
             // progDailog.dismiss();
             mBuilder.setProgress(0, 0, false);
+            mBuilder.setContentTitle("Terminé")
+                    .setContentText("Votre fiche à bien été envoyé au serveur.")
+                    .setSmallIcon(R.drawable.upload);
             mNotifyManager.notify(idBar, mBuilder.build());
 
             Toast toast = Toast.makeText(getApplicationContext(), "Enregistrement réussi", Toast.LENGTH_SHORT);
