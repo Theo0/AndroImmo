@@ -171,7 +171,7 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
             progDailog.setMessage("Chargement des fiches...");
             progDailog.setIndeterminate(false);
             progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
+            progDailog.setCancelable(false);
             progDailog.show();
         }
 

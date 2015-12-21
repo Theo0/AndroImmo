@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
-import com.umontpellier.theochambon.androimmo.R;
 import com.umontpellier.theochambon.androimmo.Managers.ShakeEventManager;
+import com.umontpellier.theochambon.androimmo.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -176,8 +175,6 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
-        if(mCurrentPhotoPath2 == null)
-            Log.w("DEBUG", "NUUULLLLLLLLLLLLLL1111");
 
     }
 

@@ -1,11 +1,14 @@
 package com.umontpellier.theochambon.androimmo.Activities;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -57,6 +60,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     FloatingActionButton fab;
     FloatingActionButton fab2;
     HashMap<String, String> contenu;
+    NotificationManager mNotifyManager;
+    NotificationCompat.Builder mBuilder;
+    int idBar = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -405,28 +411,81 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             if (!entry.getKey().equals("IMG1") && !entry.getKey().equals("IMG2") && !entry.getKey().equals("IMG3"))
                 json.put(entry.getKey(), entry.getValue());
         }
+        String[] imgname;
+        if (img1 != null) {
+            imgname = img1.split("/");
+            json.put("IMG1", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+        }
+        if (img2 != null) {
+            imgname = img2.split("/");
+            json.put("IMG2", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+        }
+        if (img3 != null) {
+            imgname = img3.split("/");
+            json.put("IMG3", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+        }
+
         return json;
     }
 
 
     public void exportDistant(View v) throws JSONException {
         JSONObject toSend = ficheToJSON();
+        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(ConsultFicheActivity.this);
+        mBuilder.setContentTitle("Envoi")
+                .setContentText("Envoi de la fiche en cours")
+                .setSmallIcon(R.drawable.upload);
+        Toast toast = Toast.makeText(getApplicationContext(), "Envoi de la fiche...", Toast.LENGTH_SHORT);
+        toast.show();
         new envoiJSONTask().execute(toSend);
+
     }
 
     protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Integer> {
+        //ProgressDialog progDailog;
+
+        @Override
+        protected void onPreExecute() {
+            mBuilder.setProgress(0, 0, true);
+            mNotifyManager.notify(idBar, mBuilder.build());
+            /*
+            progDailog = new ProgressDialog(ConsultFicheActivity.this);
+            progDailog.setMessage("Envoi...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(false);
+            progDailog.show();*/
+        }
+
         @Override
         protected Integer doInBackground(JSONObject... params) {
             JSONObject json = params[0];
             ConnectServer conn = new ConnectServer();
             conn.setUrl(Constants.serverURL + "setFiche.php");
             int env = conn.sendJSONtoURL(json);
+
+            conn.setUrl("http://149.202.51.217/serveurTheo/uploadImage.php");
+            if (img1 != null) {
+                int im = conn.uploadImage(img1);
+            }
+            if (img2 != null) {
+                int im = conn.uploadImage(img2);
+            }
+            if (img3 != null) {
+                int im = conn.uploadImage(img3);
+            }
+
             conn.close();
             return env;
         }
 
         @Override
         protected void onPostExecute(Integer param) {
+            // progDailog.dismiss();
+            mBuilder.setProgress(0, 0, false);
+            mNotifyManager.notify(idBar, mBuilder.build());
+
             Toast toast = Toast.makeText(getApplicationContext(), "Enregistrement réussi", Toast.LENGTH_SHORT);
             if (param == 1)
                 toast.show();
