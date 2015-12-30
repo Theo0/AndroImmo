@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchListeFicheDistant(View v){
-        Intent i = new Intent(MainActivity.this, ListeFicheDistantesActivity.class);
+        Intent i = new Intent(MainActivity.this, CritereActivity.class);
         startActivity(i);
     }
 

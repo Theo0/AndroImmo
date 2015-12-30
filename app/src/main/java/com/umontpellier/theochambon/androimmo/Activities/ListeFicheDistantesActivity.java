@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,15 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<ContenuListe> noms;
     List<ContenuListe> nomsCopie;
+    Intent i = getIntent();
+    String prixMin = "0";
+    String prixMax = "0";
+    String ville = "0";
+    String tailleMin = "0";
+    String tailleMax = "0";
+    String piecesMin = "0";
+    String piecesMax = "0";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,16 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
         setContentView(R.layout.activity_liste_fiche_distantes);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent i = getIntent();
+        Log.w("INTENT", i.toString());
+        prixMin = i.getStringExtra("prixMin");
+        prixMax = i.getStringExtra("prixMax");
+        ville = i.getStringExtra("ville");
+        tailleMin = i.getStringExtra("tailleMin");
+        tailleMax = i.getStringExtra("tailleMax");
+        piecesMin = i.getStringExtra("piecesMin");
+        piecesMax = i.getStringExtra("piecesMax");
 
         nomsCopie = new ArrayList<>();
 
@@ -178,7 +198,8 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
         @Override
         protected List<ContenuListe> doInBackground(Void... params) {
             ConnectServer conn = new ConnectServer();
-            conn.setUrl(Constants.serverURL + "listeFiches.php");
+            conn.setUrl(Constants.serverURL + "listeFiches.php?ville=" + ville + "&piecesMin=" + piecesMin + "&piecesMax=" + piecesMax + "&tailleMin=" + tailleMin + "&tailleMax=" + tailleMax + "&prixMin=" + prixMin + "&prixMax=" + prixMax);
+            Log.w("URL liste fiches : ", Constants.serverURL + "listeFiches.php?ville=" + ville + "&piecesMin=" + piecesMin + "&piecesMax=" + piecesMax + "&tailleMin=" + tailleMin + "&tailleMax=" + tailleMax + "&prixMin=" + prixMin + "&prixMax=" + prixMax);
             JSONArray json = conn.getResponseFromURL();
             JSONObject js;
             List<ContenuListe> listeNoms = new ArrayList<>();
@@ -186,9 +207,9 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
                 try {
                     for (int i = 0; i < json.length(); i++) {
                         js = json.getJSONObject(i);
-                        if (js.getString("VILLE") == "null") js.put("VILLE", "");
-                        if (js.getString("SURFACE") == "null") js.put("SURFACE", "");
-                        if (js.getString("NBPIECES") == "null") js.put("NBPIECES", "");
+                        if (js.getString("VILLE").equals("")) js.put("VILLE", "");
+                        if (js.getString("SURFACE").equals("")) js.put("SURFACE", "");
+                        if (js.getString("NBPIECES").equals("")) js.put("NBPIECES", "");
                         listeNoms.add(new ContenuListe(js.getString("NOM"), js.getString("VILLE"), js.getString("ID"), js.getString("SURFACE"), js.getString("NBPIECES")));
                     }
                 } catch (JSONException e) {

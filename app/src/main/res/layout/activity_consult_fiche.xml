@@ -28,39 +28,25 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:src="@drawable/upload"
-        android:onClick="addExportButton"
+        android:onClick="exportDistant"
         app:fabSize="normal"
         app:backgroundTint="@color/my_primary"
         />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabExportPDF"
-        android:layout_above="@id/fab2"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:src="@drawable/pdf"
-        android:onClick="addExportButton"
-        app:fabSize="mini"
+        android:onClick="exportPDF"
+        app:fabSize="normal"
         app:backgroundTint="@android:color/holo_blue_dark"
-        android:visibility="gone"
         />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabExportDistant"
-        android:layout_above="@id/fabExportPDF"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/upload"
-        android:onClick="exportDistant"
-        app:fabSize="mini"
-        app:backgroundTint="@android:color/holo_blue_dark"
-        android:visibility="gone"
-        />
+
 
     <!-- Liste des cartes dans une scrollview-->
     <ScrollView android:id="@+id/ScrollView01"
@@ -516,6 +502,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <!-- PRIX -->
+            <android.support.v7.widget.CardView
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/prix"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/prix"
+                        android:layout_alignParentTop="true"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/prixEdit"
+                        style="@style/MyEditTextstyle"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:layout_below="@+id/prix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>

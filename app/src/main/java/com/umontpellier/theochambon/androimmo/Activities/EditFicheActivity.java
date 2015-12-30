@@ -39,46 +39,51 @@ public class EditFicheActivity extends AppCompatActivity {
 
         HashMap<String, String> contenu = bdd.getContenuFiche(id);
 
+
         if(!contenu.isEmpty()){
 
-            TextView tv = (TextView) findViewById(R.id.nomEdit);
-            tv.setText(contenu.get("nom"));
+            EditText tv2 = (EditText) findViewById(R.id.nomEdit);
+            tv2.setText(contenu.get("NOM"));
 
-            tv = (TextView) findViewById(R.id.surfaceEdit);
-            tv.setText(contenu.get("surface"));
+
+            TextView tv = (TextView) findViewById(R.id.surfaceEdit);
+            tv.setText(contenu.get("SURFACE"));
 
             tv = (TextView) findViewById(R.id.nbpiecesEdit);
-            tv.setText(contenu.get("nbpieces"));
+            tv.setText(contenu.get("NBPIECES"));
 
             tv = (TextView) findViewById(R.id.nbchambreEdit);
-            tv.setText(contenu.get("nbchambres"));
+            tv.setText(contenu.get("NBCHAMBRES"));
 
             tv = (TextView) findViewById(R.id.nbSDBEdit);
-            tv.setText(contenu.get("nbsdb"));
+            tv.setText(contenu.get("NBSDB"));
 
             tv = (TextView) findViewById(R.id.nbWCEdit);
-            tv.setText(contenu.get("nbwc"));
+            tv.setText(contenu.get("NBWC"));
 
             tv = (TextView) findViewById(R.id.nbBalconEdit);
-            tv.setText(contenu.get("nbbalcon"));
+            tv.setText(contenu.get("NBBALCON"));
 
             tv = (TextView) findViewById(R.id.etagesEdit);
-            tv.setText(contenu.get("etages"));
+            tv.setText(contenu.get("ETAGES"));
 
             tv = (TextView) findViewById(R.id.adrEdit);
-            tv.setText(contenu.get("adr"));
+            tv.setText(contenu.get("ADR"));
 
             tv = (TextView) findViewById(R.id.expoEdit);
-            tv.setText(contenu.get("expo"));
+            tv.setText(contenu.get("EXPO"));
 
             tv = (TextView) findViewById(R.id.taxeEdit);
-            tv.setText(contenu.get("taxe"));
+            tv.setText(contenu.get("TAXE"));
 
             tv = (TextView) findViewById(R.id.coproEdit);
-            tv.setText(contenu.get("copro"));
+            tv.setText(contenu.get("COPRO"));
+
+            tv = (TextView) findViewById(R.id.prixEdit);
+            tv.setText(contenu.get("PRIX"));
 
             tv = (TextView) findViewById(R.id.notesEdit);
-            tv.setText(contenu.get("notes"));
+            tv.setText(contenu.get("NOTES"));
         }
 
     }
@@ -110,12 +115,16 @@ public class EditFicheActivity extends AppCompatActivity {
             EditText taxe = (EditText)findViewById(R.id.taxeEdit);
             if(taxe.getText().toString().matches("")){taxe.setText("0");}
             EditText copro = (EditText)findViewById(R.id.coproEdit);
+            if (copro.getText().toString().matches("")) {
+                copro.setText("0");
+            }
+            EditText prix = (EditText) findViewById(R.id.prixEdit);
             if(copro.getText().toString().matches("")){copro.setText("0");}
             EditText notes = (EditText)findViewById(R.id.notesEdit);
 
 
             BddOpenHelper bdd = new BddOpenHelper(this);
-            long er = bdd.update(nom.getText().toString(), Integer.parseInt(surface.getText().toString()), Integer.parseInt(nbPieces.getText().toString()), Integer.parseInt(nbChambres.getText().toString()), Integer.parseInt(nbsdb.getText().toString()), Integer.parseInt(nbWC.getText().toString()),Integer.parseInt(nbbalcon.getText().toString()), Integer.parseInt(etage.getText().toString()), adr.getText().toString(), ville.getText().toString(), expo.getText().toString(), Integer.parseInt(taxe.getText().toString()), Integer.parseInt(copro.getText().toString()), notes.getText().toString(), id);
+            long er = bdd.update(nom.getText().toString(), Integer.parseInt(surface.getText().toString()), Integer.parseInt(nbPieces.getText().toString()), Integer.parseInt(nbChambres.getText().toString()), Integer.parseInt(nbsdb.getText().toString()), Integer.parseInt(nbWC.getText().toString()), Integer.parseInt(nbbalcon.getText().toString()), Integer.parseInt(etage.getText().toString()), adr.getText().toString(), ville.getText().toString(), expo.getText().toString(), Integer.parseInt(taxe.getText().toString()), Integer.parseInt(copro.getText().toString()), Integer.parseInt(prix.getText().toString()), notes.getText().toString(), id);
 
             if(er == -1){
                 Toast toast = Toast.makeText(getApplicationContext(), "Erreur lors de la MAJ de la fiche (erreur BDD)", Toast.LENGTH_LONG);

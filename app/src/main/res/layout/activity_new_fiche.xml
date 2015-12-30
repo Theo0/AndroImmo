@@ -513,6 +513,41 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+        <!-- PRIX -->
+        <android.support.v7.widget.CardView
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/prix"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prix"
+                    android:layout_alignParentTop="true"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/prixEdit"
+                    style="@style/MyEditTextstyle"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:layout_below="@+id/prix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/prixhint" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
         <!-- AUTRES NOTES -->
         <android.support.v7.widget.CardView
             android:layout_width="fill_parent"
@@ -552,6 +587,7 @@
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
+
 
         <Button
             android:layout_marginTop="10dp"

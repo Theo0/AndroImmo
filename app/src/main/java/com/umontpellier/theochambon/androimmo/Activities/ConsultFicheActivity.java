@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import com.umontpellier.theochambon.androimmo.Constants.Constants;
 import com.umontpellier.theochambon.androimmo.HttpServer.ConnectServer;
 import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
+import com.umontpellier.theochambon.androimmo.Managers.ShakeEventManager;
 import com.umontpellier.theochambon.androimmo.R;
 import com.umontpellier.theochambon.androimmo.Util.WorkaroundMapFragment;
 
@@ -41,7 +43,7 @@ import java.util.Map;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class ConsultFicheActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ConsultFicheActivity extends AppCompatActivity implements OnMapReadyCallback, ShakeEventManager.ShakeListener {
     boolean exportButton = false;
     double lat = 0;
     double lon = 0;
@@ -59,10 +61,13 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     private ScrollView mScrollView;
     FloatingActionButton fab;
     FloatingActionButton fab2;
+    FloatingActionButton fabPDF;
     HashMap<String, String> contenu;
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
     int idBar = 1;
+    private ShakeEventManager sd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +75,15 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_consult_fiche);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        sd = new ShakeEventManager();
+        sd.setListener(this);
+        sd.init(this);
         imageView1 = (ImageView) findViewById(R.id.photo1);
         imageView2 = (ImageView) findViewById(R.id.photo2);
         imageView3 = (ImageView) findViewById(R.id.photo3);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fabPDF = (FloatingActionButton) findViewById(R.id.fabExportPDF);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
 
@@ -84,11 +93,25 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             fab2.hide();
             remplirFicheDistante();
         } else {
+            fabPDF.hide();
             remplirFiche();
             new remplirFicheTask().execute();
         }
         activeFullScreen();
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sd.register();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sd.deregister();
+    }
 
     public void remplirFiche(){
 
@@ -140,6 +163,9 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         tv = (TextView) findViewById(R.id.coproEdit);
         tv.setText(contenu.get("COPRO"));
+
+        tv = (TextView) findViewById(R.id.prixEdit);
+        tv.setText(contenu.get("PRIX"));
 
         tv = (TextView) findViewById(R.id.notesEdit);
         tv.setText(contenu.get("NOTES"));
@@ -301,6 +327,18 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    @Override
+    public void onShake() {
+        if (getIntent().getStringExtra("dist").equals("true")) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Voici le lien vers la fiche du bien immobilier : " + Constants.serverURL + "getPDF?id=" + id);
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.partage)));
+            Log.w("Onshake", "SHARE APPELE");
+        }
+    }
+
     private class getDonneesFicheDistantTask extends AsyncTask<Void, Void, HashMap<String, String>> {
 
         @Override
@@ -389,21 +427,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
-    public void addExportButton(View v){
-        final FloatingActionButton pdf = (FloatingActionButton) findViewById(R.id.fabExportPDF);
-        final FloatingActionButton distant = (FloatingActionButton) findViewById(R.id.fabExportDistant);
-        if(!exportButton){
-            pdf.setVisibility(View.VISIBLE);
-            distant.setVisibility(View.VISIBLE);
-            exportButton = true;
-        } else{
-            pdf.setVisibility(View.GONE);
-            distant.setVisibility(View.GONE);
-            exportButton = false;
-        }
-
-    }
-
 
     public JSONObject ficheToJSON() throws JSONException {
         JSONObject json = new JSONObject();
@@ -414,15 +437,15 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         String[] imgname;
         if (img1 != null) {
             imgname = img1.split("/");
-            json.put("IMG1", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+            json.put("IMG1", Constants.uploadDirectory + imgname[9]);
         }
         if (img2 != null) {
             imgname = img2.split("/");
-            json.put("IMG2", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+            json.put("IMG2", Constants.uploadDirectory + imgname[9]);
         }
         if (img3 != null) {
             imgname = img3.split("/");
-            json.put("IMG3", "http://149.202.51.217/serveurTheo/upload/" + imgname[9]);
+            json.put("IMG3", Constants.uploadDirectory + imgname[9]);
         }
 
         return json;
@@ -440,6 +463,14 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         toast.show();
         new envoiJSONTask().execute(toSend);
 
+    }
+
+    public void exportPDF(View w) {
+        Uri webpage = Uri.parse(Constants.serverURL + "getPDF?id=" + id);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Integer> {
@@ -465,7 +496,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             conn.setUrl(Constants.serverURL + "setFiche.php");
             int env = conn.sendJSONtoURL(json);
 
-            conn.setUrl("http://149.202.51.217/serveurTheo/uploadImage.php");
+            conn.setUrl(Constants.serverImageURL);
             if (img1 != null) {
                 int im = conn.uploadImage(img1);
             }

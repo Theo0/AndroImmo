@@ -255,11 +255,15 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
             if (copro.getText().toString().matches("")) {
                 copro.setText("0");
             }
+            EditText prix = (EditText) findViewById(R.id.prixEdit);
+            if (copro.getText().toString().matches("")) {
+                copro.setText("0");
+            }
             EditText notes = (EditText) findViewById(R.id.notesEdit);
 
 
             BddOpenHelper bdd = new BddOpenHelper(this);
-            long er = bdd.insert(nom.getText().toString(), Integer.parseInt(surface.getText().toString()), Integer.parseInt(nbPieces.getText().toString()), Integer.parseInt(nbChambres.getText().toString()), Integer.parseInt(nbsdb.getText().toString()), Integer.parseInt(nbWC.getText().toString()), Integer.parseInt(nbbalcon.getText().toString()), Integer.parseInt(etage.getText().toString()), adr.getText().toString(), ville.getText().toString(), expo.getText().toString(), Integer.parseInt(taxe.getText().toString()), Integer.parseInt(copro.getText().toString()), notes.getText().toString(), lat, lon, mCurrentPhotoPath1, mCurrentPhotoPath2, mCurrentPhotoPath3);
+            long er = bdd.insert(nom.getText().toString(), Integer.parseInt(surface.getText().toString()), Integer.parseInt(nbPieces.getText().toString()), Integer.parseInt(nbChambres.getText().toString()), Integer.parseInt(nbsdb.getText().toString()), Integer.parseInt(nbWC.getText().toString()), Integer.parseInt(nbbalcon.getText().toString()), Integer.parseInt(etage.getText().toString()), adr.getText().toString(), ville.getText().toString(), expo.getText().toString(), Integer.parseInt(taxe.getText().toString()), Integer.parseInt(copro.getText().toString()), Integer.parseInt(prix.getText().toString()), notes.getText().toString(), lat, lon, mCurrentPhotoPath1, mCurrentPhotoPath2, mCurrentPhotoPath3);
 
             if (er == -1) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Erreur lors de la création de la fiche (erreur BDD)", Toast.LENGTH_LONG);

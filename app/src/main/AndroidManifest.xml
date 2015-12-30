@@ -42,11 +42,9 @@
         <activity
             android:name=".Activities.ListeFicheActivity"
             android:label="@string/title_activity_liste_fiche" />
-
         <activity
             android:name=".Activities.ListeFicheDistantesActivity"
             android:label="@string/title_activity_liste_fiche_distante" />
-
         <activity
             android:name=".Activities.ConsultFicheActivity"
             android:configChanges="orientation|screenSize"
@@ -66,6 +64,9 @@
         <activity
             android:name=".CameraTest"
             android:label="@string/title_activity_camera_test" />
+        <activity
+            android:name=".Activities.CritereActivity"
+            android:label="@string/title_activity_critere" />
     </application>
 
 </manifest>

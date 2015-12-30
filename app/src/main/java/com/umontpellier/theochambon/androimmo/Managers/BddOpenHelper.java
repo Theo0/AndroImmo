@@ -21,7 +21,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
     private static final String TABLE_NAME = "FICHES";
     private static final String DATABASE_NAME = "IMMO";
     private static final String DATABASE_CREATE =
-            "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY, NOM TEXT, SURFACE INTEGER, NBPIECES INTEGER, NBCHAMBRES INTEGER, NBSDB INTEGER, NBWC INTEGER, NBBALCON INTEGER, ETAGES INTEGER, ADR TEXT, VILLE TEXT, EXPO TEXT, TAXE INTEGER, COPRO INTEGER, NOTES TEXT, LAT INTEGER, LON INTEGER, IMG1 TEXT, IMG2 TEXT, IMG3 TEXT)";
+            "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY, NOM TEXT, SURFACE INTEGER, NBPIECES INTEGER, NBCHAMBRES INTEGER, NBSDB INTEGER, NBWC INTEGER, NBBALCON INTEGER, ETAGES INTEGER, ADR TEXT, VILLE TEXT, EXPO TEXT, TAXE INTEGER, COPRO INTEGER, PRIX INTEGER, NOTES TEXT, LAT INTEGER, LON INTEGER, IMG1 TEXT, IMG2 TEXT, IMG3 TEXT)";
 
     public BddOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,7 +37,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
 
     }
 
-    public long insert(String nom, int surface, int nbpieces, int nbchambres, int nbsdb, int nbwc, int nbbalcon, int etage, String adr, String ville, String expo, int taxe, int copro, String notes, double lat, double lon, String img1, String img2, String img3){
+    public long insert(String nom, int surface, int nbpieces, int nbchambres, int nbsdb, int nbwc, int nbbalcon, int etage, String adr, String ville, String expo, int taxe, int copro, int prix, String notes, double lat, double lon, String img1, String img2, String img3) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -54,6 +54,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         values.put("EXPO", expo);
         values.put("TAXE", taxe);
         values.put("COPRO", copro);
+        values.put("PRIX", prix);
         values.put("NOTES", notes);
         values.put("LAT", lat);
         values.put("LON", lon);
@@ -66,7 +67,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         return er;
     }
 
-    public long update(String nom, int surface, int nbpieces, int nbchambres, int nbsdb, int nbwc, int nbbalcon, int etage, String adr, String ville, String expo, int taxe, int copro, String notes, String id){
+    public long update(String nom, int surface, int nbpieces, int nbchambres, int nbsdb, int nbwc, int nbbalcon, int etage, String adr, String ville, String expo, int taxe, int copro, int prix, String notes, String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -83,6 +84,7 @@ public class BddOpenHelper extends SQLiteOpenHelper{
         values.put("EXPO", expo);
         values.put("TAXE", taxe);
         values.put("COPRO", copro);
+        values.put("PRIX", prix);
         values.put("NOTES", notes);
 
         long er = db.update(TABLE_NAME, values, "ID =" + id, null);
@@ -132,12 +134,13 @@ public class BddOpenHelper extends SQLiteOpenHelper{
             contenu.put("EXPO", cursor.getString(11));
             contenu.put("TAXE", cursor.getString(12));
             contenu.put("COPRO", cursor.getString(13));
-            contenu.put("NOTES", cursor.getString(14));
-            contenu.put("LAT", cursor.getString(15));
-            contenu.put("LON", cursor.getString(16));
-            contenu.put("IMG1", cursor.getString(17));
-            contenu.put("IMG2", cursor.getString(18));
-            contenu.put("IMG3", cursor.getString(19));
+            contenu.put("PRIX", cursor.getString(14));
+            contenu.put("NOTES", cursor.getString(15));
+            contenu.put("LAT", cursor.getString(16));
+            contenu.put("LON", cursor.getString(17));
+            contenu.put("IMG1", cursor.getString(18));
+            contenu.put("IMG2", cursor.getString(19));
+            contenu.put("IMG3", cursor.getString(20));
 
         }
 

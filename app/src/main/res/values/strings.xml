@@ -33,6 +33,7 @@
     <string name="expo">Exposition : </string>
     <string name="taxe">Taxe Foncière : </string>
     <string name="copro">Charges de copropriétés : </string>
+    <string name="prix">Prix : </string>
     <string name="descr">Autres notes : </string>
     <!-- Hints nouvelle fiche-->
     <string name="nomhint">Ex : Grand studio centre Montpellier </string>
@@ -48,7 +49,8 @@
     <string name="expohint">Ex : Sud Ouest </string>
     <string name="taxehint">Ex : 1500€ </string>
     <string name="coprohint">Ex : 500€</string>
-    <string name="descrhint">Ex : Chambres à rénover, quartier très calme, proche transports, etc...</string>
+    <string name="prixhint">Ex : 500000€</string>
+    <string name="descrhint">Ex : Chambres à rénover, quartier très calme, proche transports, etc…</string>
 
     <string name="pieces">pièces</string>
 
@@ -60,11 +62,20 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_camera_test">CameraTest</string>
 
-    <string name="search">Rechercher...</string>
+    <string name="search">Rechercher…</string>
 
     <string name="noConnectTitle">Pas de Connexion</string>
     <string name="noConnectBody">Vous n\'avez de pas de connexion internet. Veuillez activer le Wi-Fi ou les données mobiles afin d\'accèder aux fiches distantes.</string>
+    <string name="title_activity_critere">Recherche de Fiches Distantes</string>
 
+    <string name="recherche_nom_ville">Ville ou se situe le bien :</string>
+    <string name="recherche_taille">Taille :</string>
+    <string name="recherche_nbpieces_min">Nombre de pièces : </string>
+    <string name="recherche_prix">Prix : </string>
+    <string name="et"> et </string>
+    <string name="entre">Entre </string>
+    <string name="Criteres">Critères de recherche</string>
 
+    <string name="partage">Envoyer via…</string>
 </resources>
 
