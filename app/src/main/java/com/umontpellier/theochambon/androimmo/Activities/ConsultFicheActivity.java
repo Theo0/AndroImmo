@@ -1,7 +1,5 @@
 package com.umontpellier.theochambon.androimmo.Activities;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -31,6 +28,7 @@ import com.umontpellier.theochambon.androimmo.HttpServer.ConnectServer;
 import com.umontpellier.theochambon.androimmo.Managers.BddOpenHelper;
 import com.umontpellier.theochambon.androimmo.Managers.ShakeEventManager;
 import com.umontpellier.theochambon.androimmo.R;
+import com.umontpellier.theochambon.androimmo.Services.UploadImage;
 import com.umontpellier.theochambon.androimmo.Util.WorkaroundMapFragment;
 
 import org.json.JSONArray;
@@ -63,9 +61,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     FloatingActionButton fab2;
     FloatingActionButton fabPDF;
     HashMap<String, String> contenu;
-    NotificationManager mNotifyManager;
-    NotificationCompat.Builder mBuilder;
-    int idBar = 1;
     private ShakeEventManager sd;
 
 
@@ -454,11 +449,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     public void exportDistant(View v) throws JSONException {
         JSONObject toSend = ficheToJSON();
-        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(ConsultFicheActivity.this);
-        mBuilder.setContentTitle("Envoi")
-                .setContentText("Envoi de la fiche en cours")
-                .setSmallIcon(R.drawable.upload);
         Toast toast = Toast.makeText(getApplicationContext(), "Envoi de la fiche...", Toast.LENGTH_SHORT);
         toast.show();
         new envoiJSONTask().execute(toSend);
@@ -478,8 +468,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         @Override
         protected void onPreExecute() {
-            mBuilder.setProgress(0, 0, true);
-            mNotifyManager.notify(idBar, mBuilder.build());
             /*
             progDailog = new ProgressDialog(ConsultFicheActivity.this);
             progDailog.setMessage("Envoi...");
@@ -491,6 +479,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         @Override
         protected Integer doInBackground(JSONObject... params) {
+            Intent i = new Intent(ConsultFicheActivity.this, UploadImage.class);
             JSONObject json = params[0];
             ConnectServer conn = new ConnectServer();
             conn.setUrl(Constants.serverURL + "setFiche.php");
@@ -498,27 +487,23 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
             conn.setUrl(Constants.serverImageURL);
             if (img1 != null) {
-                int im = conn.uploadImage(img1);
+                i.putExtra("img1", img1);
             }
             if (img2 != null) {
-                int im = conn.uploadImage(img2);
+                i.putExtra("img2", img2);
             }
             if (img3 != null) {
-                int im = conn.uploadImage(img3);
+                i.putExtra("img3", img3);
             }
 
             conn.close();
+            startService(i);
             return env;
         }
 
         @Override
         protected void onPostExecute(Integer param) {
             // progDailog.dismiss();
-            mBuilder.setProgress(0, 0, false);
-            mBuilder.setContentTitle("Terminé")
-                    .setContentText("Votre fiche à bien été envoyé au serveur.")
-                    .setSmallIcon(R.drawable.upload);
-            mNotifyManager.notify(idBar, mBuilder.build());
 
             Toast toast = Toast.makeText(getApplicationContext(), "Enregistrement réussi", Toast.LENGTH_SHORT);
             if (param == 1)

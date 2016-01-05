@@ -256,8 +256,8 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
                 copro.setText("0");
             }
             EditText prix = (EditText) findViewById(R.id.prixEdit);
-            if (copro.getText().toString().matches("")) {
-                copro.setText("0");
+            if (prix.getText().toString().matches("")) {
+                prix.setText("0");
             }
             EditText notes = (EditText) findViewById(R.id.notesEdit);
 

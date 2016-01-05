@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by theo on 01/12/2015.
+ * Created by theo.
  */
 public class ConnectServer {
 

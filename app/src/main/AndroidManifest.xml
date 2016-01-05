@@ -67,6 +67,13 @@
         <activity
             android:name=".Activities.CritereActivity"
             android:label="@string/title_activity_critere" />
+
+        <service
+            android:name=".Activities.UploadImage"
+            android:exported="false" />
+        <service
+            android:name=".Services.UploadImage"
+            android:exported="false"></service>
     </application>
 
 </manifest>
