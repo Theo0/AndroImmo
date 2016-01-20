@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,7 +60,6 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        Log.w("INTENT", i.toString());
         prixMin = i.getStringExtra("prixMin");
         prixMax = i.getStringExtra("prixMax");
         ville = i.getStringExtra("ville");
@@ -199,7 +197,6 @@ public class ListeFicheDistantesActivity extends AppCompatActivity implements Se
         protected List<ContenuListe> doInBackground(Void... params) {
             ConnectServer conn = new ConnectServer();
             conn.setUrl(Constants.serverURL + "listeFiches.php?ville=" + ville + "&piecesMin=" + piecesMin + "&piecesMax=" + piecesMax + "&tailleMin=" + tailleMin + "&tailleMax=" + tailleMax + "&prixMin=" + prixMin + "&prixMax=" + prixMax);
-            Log.w("URL liste fiches : ", Constants.serverURL + "listeFiches.php?ville=" + ville + "&piecesMin=" + piecesMin + "&piecesMax=" + piecesMax + "&tailleMin=" + tailleMin + "&tailleMax=" + tailleMax + "&prixMin=" + prixMin + "&prixMax=" + prixMax);
             JSONArray json = conn.getResponseFromURL();
             JSONObject js;
             List<ContenuListe> listeNoms = new ArrayList<>();

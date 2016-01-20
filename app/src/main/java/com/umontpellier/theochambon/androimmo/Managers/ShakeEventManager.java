@@ -9,19 +9,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
     public class ShakeEventManager implements SensorEventListener {
-
-        private SensorManager sManager;
-        private Sensor s;
-
 
         private static final int MOV_COUNTS = 5;
         private static final int MOV_THRESHOLD = 8;
         private static final float ALPHA = 0.8F;
-        private static final int SHAKE_WINDOW_TIME_INTERVAL = 500; // milliseconds
-
+        private static final int SHAKE_WINDOW_TIME_INTERVAL = 500; // millisecondes
+        private SensorManager sManager;
+        private Sensor s;
         // Gravity force on x,y,z axis
         private float gravity[] = new float[3];
 
@@ -66,7 +62,6 @@ import android.util.Log;
                     if (counter >= MOV_COUNTS)
                         if (listener != null)
                             listener.onShake();
-                            Log.w("DEBUG", "Ca a shaké");
                 }
             }
 

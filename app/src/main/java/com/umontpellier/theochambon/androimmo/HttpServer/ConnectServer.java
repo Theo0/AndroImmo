@@ -1,7 +1,5 @@
 package com.umontpellier.theochambon.androimmo.HttpServer;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +66,6 @@ public class ConnectServer {
             this.connect.connect();
             OutputStreamWriter wr = new OutputStreamWriter(this.connect.getOutputStream());
             wr.write("json=" + json.toString());
-            Log.w("JSON =====", json.toString());
             wr.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(this.connect.getInputStream()));
             String aux;
@@ -76,7 +73,6 @@ public class ConnectServer {
             while ((aux = br.readLine()) != null) {
                 builder.append(aux);
             }
-            Log.w("JSON renvoyé : ", builder.toString());
             wr.close();
             br.close();
 
@@ -100,7 +96,7 @@ public class ConnectServer {
         try {
             int bytesRead, bytesAvailable, bufferSize;
             byte[] buffer;
-            int maxBufferSize = 1 * 1024 * 1024;
+            int maxBufferSize = 1024 * 1024;
             File sourceFile = new File(path);
             if (!sourceFile.isFile()) {
                 return -1;
@@ -143,10 +139,6 @@ public class ConnectServer {
                 dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
                 serverResponseCode = connect.getResponseCode();
-                String serverResponseMessage = connect.getResponseMessage();
-
-                Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
 
                 if (serverResponseCode == 200) {
                     retour = 0;
@@ -165,7 +157,6 @@ public class ConnectServer {
                     builder.append(aux);
                 }
 
-                Log.w("DEBUG : ", builder.toString());
             }
 
         } catch (IOException e) {

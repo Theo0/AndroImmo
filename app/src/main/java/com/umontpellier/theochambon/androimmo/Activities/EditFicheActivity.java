@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 public class EditFicheActivity extends AppCompatActivity {
 
-    private Intent intent;
     private String id;
 
     @Override
@@ -25,13 +24,15 @@ public class EditFicheActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_edit_fiche);
-        intent = getIntent();
+        Intent intent = getIntent();
         id = intent.getStringExtra("id");
         remplirFiche();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
     }
 
+
+    //Récupération du contenu de la fiche et affichage sur l'UI
     public void remplirFiche(){
 
 
@@ -70,6 +71,9 @@ public class EditFicheActivity extends AppCompatActivity {
             tv = (TextView) findViewById(R.id.adrEdit);
             tv.setText(contenu.get("ADR"));
 
+            tv = (TextView) findViewById(R.id.villeEdit);
+            tv.setText(contenu.get("VILLE"));
+
             tv = (TextView) findViewById(R.id.expoEdit);
             tv.setText(contenu.get("EXPO"));
 
@@ -88,6 +92,8 @@ public class EditFicheActivity extends AppCompatActivity {
 
     }
 
+
+    //Mise à jour des données de la fiche dans la BDD
     public void sauveFiche(View v){
         EditText nom = (EditText)findViewById(R.id.nomEdit);
         if(nom.getText().toString().matches("")){

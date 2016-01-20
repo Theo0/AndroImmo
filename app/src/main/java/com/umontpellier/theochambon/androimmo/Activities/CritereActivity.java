@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.umontpellier.theochambon.androimmo.R;
 
+
+//Ecran représentant le critère de séléction des fiches distantes
 public class CritereActivity extends AppCompatActivity {
 
     @Override
@@ -35,6 +37,7 @@ public class CritereActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Récupération des critères de recherche
     public void recherche(View v) {
         EditText prixMin = (EditText) findViewById(R.id.PrixEditMin);
         if (prixMin.getText().toString().matches("")) {

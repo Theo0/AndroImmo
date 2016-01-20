@@ -20,29 +20,6 @@ public class MainActivity extends AppCompatActivity {
         
     }
 
-    /* GESTION DU MENU
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem spinner_item) {
-        // Handle action bar spinner_item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = spinner_item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(spinner_item);
-    }*/
-
     public void launchNewFiche(View v){
         Intent i = new Intent(MainActivity.this, NewFicheActivity.class);
         startActivity(i);

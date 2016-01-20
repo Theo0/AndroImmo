@@ -70,6 +70,8 @@ public class ListeFicheActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
+
+    //Recherche dynamique
     @Override
     public boolean onQueryTextChange(String query) {
         noms = bdd.getNoms();

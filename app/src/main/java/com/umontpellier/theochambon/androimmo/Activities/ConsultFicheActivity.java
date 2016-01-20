@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,7 +41,6 @@ import java.util.Map;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ConsultFicheActivity extends AppCompatActivity implements OnMapReadyCallback, ShakeEventManager.ShakeListener {
-    boolean exportButton = false;
     double lat = 0;
     double lon = 0;
     String img1;
@@ -56,12 +54,13 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     Bitmap bitmap2;
     Bitmap bitmap3;
     PhotoViewAttacher mAttacher;
-    private ScrollView mScrollView;
     FloatingActionButton fab;
     FloatingActionButton fab2;
     FloatingActionButton fabPDF;
     HashMap<String, String> contenu;
+    private ScrollView mScrollView;
     private ShakeEventManager sd;
+    private boolean isShaken = false;
 
 
     @Override
@@ -83,6 +82,8 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         id = intent.getStringExtra("id");
 
         initialiseMap();
+
+        //On gère le traitement à faire et l'affichage selon si c'est une fiche locale ou distante
         if (getIntent().getStringExtra("dist").equals("true")) {
             fab.hide();
             fab2.hide();
@@ -93,7 +94,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             new remplirFicheTask().execute();
         }
         activeFullScreen();
-        }
+    }
 
     @Override
     protected void onResume() {
@@ -108,17 +109,18 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         sd.deregister();
     }
 
-    public void remplirFiche(){
+    public void remplirFiche() {
 
         BddOpenHelper bdd = new BddOpenHelper(this);
 
         contenu = bdd.getContenuFiche(id);
 
-        if(!contenu.isEmpty()){
+        if (!contenu.isEmpty()) {
             remplirTextViews();
         }
     }
 
+    //affecte le contenu récupéré depuis la BDD aux champs du layout
     public void remplirTextViews() {
         TextView tv = (TextView) findViewById(R.id.NomFiche);
         tv.setText(contenu.get("NOM"));
@@ -165,20 +167,24 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         tv = (TextView) findViewById(R.id.notesEdit);
         tv.setText(contenu.get("NOTES"));
 
-        if (contenu.get("LAT") == null || contenu.get("LAT").equals("")) {
+        if (contenu.get("LAT") == null) {
             lat = 0;
         } else {
             lat = Double.parseDouble(contenu.get("LAT"));
         }
-        if (contenu.get("LONG") == null || contenu.get("LONG").equals("")) {
+        if (contenu.get("LON") == null) {
             lon = 0;
         } else {
-            lon = Double.parseDouble(contenu.get("LAT"));
+            lon = Double.parseDouble(contenu.get("LON"));
         }
+
+        //On récupère le chemin des photos
         img1 = contenu.get("IMG1");
         img2 = contenu.get("IMG2");
         img3 = contenu.get("IMG3");
 
+
+        //Si ce sont des images distantes, on utilise la librairie Picasso pour les charger depuis une URL
         if (getIntent().getStringExtra("dist").equals("true")) {
             if (img1 != null && !img1.equals("")) {
                 Picasso.with(this)
@@ -202,7 +208,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
                         .into(imageView3);
             }
         }
-
+        initialiseMap();
 
     }
 
@@ -211,7 +217,8 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
     }
 
 
-    public void editFiche(View v){
+    //Méthode correspondant à l'action du bouton "Editer", pour lancer une nouvelle activité
+    public void editFiche(View v) {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
 
@@ -244,33 +251,43 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 15));
     }
 
-    private void activeFullScreen(){
+
+    //Gestion du full screen pour les images
+    private void activeFullScreen() {
         final RelativeLayout full = (RelativeLayout) findViewById(R.id.fullLayout);
         final ImageView fullImage = (ImageView) findViewById(R.id.fullview);
         final FloatingActionButton quit = (FloatingActionButton) findViewById(R.id.quitButton);
 
         mAttacher = new PhotoViewAttacher(fullImage);
-        full.setOnClickListener(new View.OnClickListener()
-        {
+        full.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 full.setVisibility(View.GONE);
                 getSupportActionBar().show();
-                fab.show();
-                fab2.show();
-            }});
-        quit.setOnClickListener(new View.OnClickListener()
-        {
+                if (!getIntent().getStringExtra("dist").equals("true")) {
+                    fab.show();
+                    fab2.show();
+                } else {
+                    fabPDF.show();
+                }
+            }
+        });
+        quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 full.setVisibility(View.GONE);
                 getSupportActionBar().show();
-                fab.show();
-                fab2.show();
-            }});
-        imageView1.setOnClickListener(new View.OnClickListener()
-        {   @Override
-            public void onClick (View v){
+                if (!getIntent().getStringExtra("dist").equals("true")) {
+                    fab.show();
+                    fab2.show();
+                } else {
+                    fabPDF.show();
+                }
+            }
+        });
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
                 if (getIntent().getStringExtra("dist").equals("true"))
@@ -279,10 +296,12 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
                     fullImage.setImageBitmap(bitmap1);
                 fab.hide();
                 fab2.hide();
-            }});
-        imageView2.setOnClickListener(new View.OnClickListener()
-        {   @Override
-            public void onClick (View v){
+                fabPDF.hide();
+            }
+        });
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
                 if (getIntent().getStringExtra("dist").equals("true"))
@@ -291,10 +310,12 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
                     fullImage.setImageBitmap(bitmap2);
                 fab.hide();
                 fab2.hide();
-            }});
-        imageView3.setOnClickListener(new View.OnClickListener()
-        {   @Override
-            public void onClick (View v){
+                fabPDF.hide();
+            }
+        });
+        imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 getSupportActionBar().hide();
                 full.setVisibility(View.VISIBLE);
                 if (getIntent().getStringExtra("dist").equals("true"))
@@ -303,20 +324,22 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
                     fullImage.setImageBitmap(bitmap3);
                 fab.hide();
                 fab2.hide();
-            }});
+            }
+        });
     }
 
-    private void initialiseMap(){
+    private void initialiseMap() {
         WorkaroundMapFragment mapFragment = (WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         GoogleMap mMap = ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
-        mScrollView=(ScrollView) findViewById(R.id.ScrollView01);((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).
+        mScrollView = (ScrollView) findViewById(R.id.ScrollView01);
+        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).
                 setListener(new WorkaroundMapFragment.OnTouchListener() {
-                                @Override
-                                public void onTouch () {
-                                    mScrollView.requestDisallowInterceptTouchEvent(true);
-                                }
-                            });
+                    @Override
+                    public void onTouch() {
+                        mScrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                });
 
         mapFragment.getMapAsync(this);
 
@@ -324,16 +347,59 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onShake() {
-        if (getIntent().getStringExtra("dist").equals("true")) {
+        if (getIntent().getStringExtra("dist").equals("true") && !isShaken) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Voici le lien vers la fiche du bien immobilier : " + Constants.serverURL + "getPDF?id=" + id);
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.partage)));
-            Log.w("Onshake", "SHARE APPELE");
+            isShaken = true;
+        }
+        if (!isShaken) isShaken = true;
+    }
+
+    //Encodage des données d'une fiche en JSON
+    public JSONObject ficheToJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        for (Map.Entry<String, String> entry : contenu.entrySet()) {
+            if (!entry.getKey().equals("IMG1") && !entry.getKey().equals("IMG2") && !entry.getKey().equals("IMG3"))
+                json.put(entry.getKey(), entry.getValue());
+        }
+        String[] imgname;
+        if (img1 != null) {
+            imgname = img1.split("/");
+            json.put("IMG1", Constants.uploadDirectory + imgname[9]);
+        }
+        if (img2 != null) {
+            imgname = img2.split("/");
+            json.put("IMG2", Constants.uploadDirectory + imgname[9]);
+        }
+        if (img3 != null) {
+            imgname = img3.split("/");
+            json.put("IMG3", Constants.uploadDirectory + imgname[9]);
+        }
+        return json;
+    }
+
+    //Méthode correspondant au bouton d'export
+    public void exportDistant(View v) throws JSONException {
+        JSONObject toSend = ficheToJSON();
+        Toast toast = Toast.makeText(getApplicationContext(), "Envoi de la fiche...", Toast.LENGTH_SHORT);
+        toast.show();
+        new envoiJSONTask().execute(toSend);
+
+    }
+
+    //Méthode correspondant au bouton d'export
+    public void exportPDF(View w) {
+        Uri webpage = Uri.parse(Constants.serverURL + "getPDF?id=" + id);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 
+    //Récupération et décodage du fichier JSON représentant une fiche distante
     private class getDonneesFicheDistantTask extends AsyncTask<Void, Void, HashMap<String, String>> {
 
         @Override
@@ -342,7 +408,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             conn.setUrl(Constants.serverURL + "getFiche.php?id=" + id);
             contenu = new HashMap<>();
             JSONArray json = conn.getResponseFromURL();
-            Log.w("MAP : ", json.toString());
             try {
                 if (json != null && json.length() > 0) {
                     JSONObject js = json.getJSONObject(0);
@@ -372,6 +437,7 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+    //Charger les photos se fait dans une AsyncTask pour ne pas ralentir l'UI
     private class remplirFicheTask extends AsyncTask<Void, Void, Bitmap[]> {
 
         @Override
@@ -389,20 +455,20 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
             int photoH = bmOptions.outHeight;
 
             // Determine how much to scale down the image
-            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+            int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
             // Decode the image file into a Bitmap sized to fill the View
             bmOptions.inJustDecodeBounds = false;
             bmOptions.inSampleSize = scaleFactor;
             bmOptions.inPurgeable = true;
 
-            if(img1 != null)
+            if (img1 != null)
                 bitmap1 = BitmapFactory.decodeFile(img1, bmOptions);
 
-            if(img2 != null)
+            if (img2 != null)
                 bitmap2 = BitmapFactory.decodeFile(img2, bmOptions);
 
-            if(img3 != null)
+            if (img3 != null)
                 bitmap3 = BitmapFactory.decodeFile(img3, bmOptions);
 
             Bitmap[] ret = {bitmap1, bitmap2, bitmap3};
@@ -412,70 +478,18 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
         }
 
         protected void onPostExecute(Bitmap[] result) {
-            if(img1 != null)
-            imageView1.setImageBitmap(result[0]);
-            if(img2 != null)
-            imageView2.setImageBitmap(result[1]);
-            if(img3 != null)
-            imageView3.setImageBitmap(result[2]);
+            if (img1 != null)
+                imageView1.setImageBitmap(result[0]);
+            if (img2 != null)
+                imageView2.setImageBitmap(result[1]);
+            if (img3 != null)
+                imageView3.setImageBitmap(result[2]);
 
         }
     }
 
-
-    public JSONObject ficheToJSON() throws JSONException {
-        JSONObject json = new JSONObject();
-        for (Map.Entry<String, String> entry : contenu.entrySet()) {
-            if (!entry.getKey().equals("IMG1") && !entry.getKey().equals("IMG2") && !entry.getKey().equals("IMG3"))
-                json.put(entry.getKey(), entry.getValue());
-        }
-        String[] imgname;
-        if (img1 != null) {
-            imgname = img1.split("/");
-            json.put("IMG1", Constants.uploadDirectory + imgname[9]);
-        }
-        if (img2 != null) {
-            imgname = img2.split("/");
-            json.put("IMG2", Constants.uploadDirectory + imgname[9]);
-        }
-        if (img3 != null) {
-            imgname = img3.split("/");
-            json.put("IMG3", Constants.uploadDirectory + imgname[9]);
-        }
-
-        return json;
-    }
-
-
-    public void exportDistant(View v) throws JSONException {
-        JSONObject toSend = ficheToJSON();
-        Toast toast = Toast.makeText(getApplicationContext(), "Envoi de la fiche...", Toast.LENGTH_SHORT);
-        toast.show();
-        new envoiJSONTask().execute(toSend);
-
-    }
-
-    public void exportPDF(View w) {
-        Uri webpage = Uri.parse(Constants.serverURL + "getPDF?id=" + id);
-        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
-
+    //Envoi d'une fiche vers le serveur distant à l'aide d'un AsyncTask et d'un IntentService
     protected class envoiJSONTask extends AsyncTask<JSONObject, Void, Integer> {
-        //ProgressDialog progDailog;
-
-        @Override
-        protected void onPreExecute() {
-            /*
-            progDailog = new ProgressDialog(ConsultFicheActivity.this);
-            progDailog.setMessage("Envoi...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(false);
-            progDailog.show();*/
-        }
 
         @Override
         protected Integer doInBackground(JSONObject... params) {
@@ -503,8 +517,6 @@ public class ConsultFicheActivity extends AppCompatActivity implements OnMapRead
 
         @Override
         protected void onPostExecute(Integer param) {
-            // progDailog.dismiss();
-
             Toast toast = Toast.makeText(getApplicationContext(), "Enregistrement réussi", Toast.LENGTH_SHORT);
             if (param == 1)
                 toast.show();

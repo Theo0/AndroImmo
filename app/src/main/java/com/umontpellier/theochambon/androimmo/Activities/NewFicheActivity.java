@@ -30,10 +30,9 @@ import java.util.Date;
 
 public class NewFicheActivity extends AppCompatActivity implements ShakeEventManager.ShakeListener {
 
-    private Location lastKnownLocation;
+    static final int REQUEST_TAKE_PHOTO = 1;
     private double lat = 0;
     private double lon = 0;
-    static final int REQUEST_TAKE_PHOTO = 1;
     private ImageView imageView1;
     private ImageView imageView2;
     private ImageView imageView3;
@@ -108,6 +107,8 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
         }
     }
 
+
+    //Redimensionnement et affichage de la photo dans le layout
     private void setPic(int id) {
         // Get the dimensions of the View
         int targetW = 400;
@@ -155,6 +156,7 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
         imageView.setImageBitmap(bitmap);
     }
 
+    //Récupération de la photo
     private void dispatchTakePictureIntent(int id) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -179,6 +181,7 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
     }
 
 
+    //Création du fichier contenant la photo, avec comme titre la date
     private File createImageFile(int id) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -208,6 +211,8 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
         return image;
     }
 
+
+    //Sauvegarde la fiche en BDD
     public void sauveFiche(View v) {
 
 
@@ -275,10 +280,11 @@ public class NewFicheActivity extends AppCompatActivity implements ShakeEventMan
         }
     }
 
+    //Localisation rapide
     public void locate(View v) {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
-        lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+        Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
         if(lastKnownLocation != null){
         lat = lastKnownLocation.getLatitude();
         lon = lastKnownLocation.getLongitude();
